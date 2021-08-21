@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlanetsService } from '../services/planets.service';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
 import { Planet, Planets } from '../planet.interface';
 
 // marks the isFavourite flag for the planets added to favourites
@@ -27,11 +27,16 @@ export class PlanetsListComponent implements OnInit {
   searchTerm$ = new Subject<string>();
   loading = false
   nextApi: string = "https://swapi.dev/api/planets/?page=1";
+  destroySub$: Subject<any> = new Subject();
   constructor(private planetService: PlanetsService) { }
 
   ngOnInit() {
     // listen to searchTerm subject for search input(server side search)
     this.searchPlanet();
+    this.planetService.resetFavourites
+      .pipe(takeUntil(this.destroySub$)).subscribe(() => {
+        this.planets.forEach(planet => planet.isFavourite = false)
+      })
   }
 
   /**
@@ -64,6 +69,7 @@ export class PlanetsListComponent implements OnInit {
   searchPlanet() {
     let favourites: string[] = (this.planetService.getFavourites()).map(d => d.name);
     this.searchTerm$.pipe(
+      takeUntil(this.destroySub$),
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((d: string) => {
@@ -91,6 +97,13 @@ export class PlanetsListComponent implements OnInit {
   onScroll() {
     this.getPlanets();
   }
+
+  ngOnDestroy() {
+    this.destroySub$.next();
+    this.destroySub$.complete();
+  }
+
+
 }
 
 
