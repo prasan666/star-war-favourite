@@ -1,0 +1,29 @@
+<div class="container">
+    <p>Planets List {{planets.length ? '(' + planets.length + ')' : ''}}</p>
+
+    <div class="p-2">
+        <input #searchRef type="search" class="form-control" placeholder="Search" [(ngModel)]="searchString"
+            (ngModelChange)="searchTerm$.next(searchString)">
+            <i>Server side search implemented here</i>
+    </div>
+
+    <div style="height: calc(100vh - 250px); overflow-y: auto">
+        <app-infinite-scroll (scrolled)="onScroll()">
+            <div class="d-flex flex-column">
+                <ng-container *ngIf="planets.length; else zeroState">
+                    <div *ngFor="let planet of planets">
+                        <app-planet-card [planet]="planet"></app-planet-card>
+                    </div>
+                </ng-container>
+                <ng-template #zeroState>
+                    <div>No data found</div>
+                </ng-template>
+            </div>
+
+            <div *ngIf="loading">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+        </app-infinite-scroll>
+    </div>

@@ -1,0 +1,8 @@
+<div class="card m-2 ">
+    <div class="card-body">
+        <h5 class="card-title">Planet Name : {{planet.name}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Climate : {{planet.climate}}</h6>
+        <button class=" btn btn-primary" (click)="addRemoveToFavourite(planet)">{{planet.isFavourite ? 'Remove' : 'Add'}}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<p>Favourite Planets List {{favourites.length ? '(' + favourites.length + ')' : ''}}</p>
+
+<div class="p-2">
+    <input #searchRef type="search" class="form-control" placeholder="Search" [(ngModel)]="searchString">
+    <i>Local pipe search implemented here</i>
+</div>
+
+<ng-container *ngIf="favourites?.length; else zeroState">
+    <div *ngFor="let planet of favourites | searchPipee:searchString">
+        <app-planet-card (removeFovourite)="removeFovourite($event)" [planet]="planet"></app-planet-card>
+    </div>
+</ng-container>
+
+<ng-template #zeroState>
+    <div class="text-center m-3">
+        No Favourites added yet, Add some from planets list
+    </div>
+</ng-template>

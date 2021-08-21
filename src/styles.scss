@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+body{
+    background-color: #E3CD81FF;
+}
+* {
+    box-sizing: border-box;
+  }
+
+  i{
+    font-size: 11px;
+}
+
+button {
+    align-self: center;
+    border: none;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: rgb(74, 110, 236);
+    color: white;
+    box-shadow: 0 4px #999;
+}
+button:hover {
+    background-color: rgb(38, 82, 240);
+}
+button:active {
+    background-color: rgb(38, 82, 240);
+    box-shadow: 0 0px #666;
+    transform: translateY(4px);
+}
